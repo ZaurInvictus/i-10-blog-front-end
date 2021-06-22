@@ -2,16 +2,16 @@ import React from "react";
 //import Button from "react-bootstrap/Button";
 import imgHome from '../img/home-bg.jpg'
 
-const HeaderNav = () => {
+const Jumbotron = () => {
   return (
-    <header class="masthead" style={{ backgroundImage: `url(${imgHome})` }}>
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="site-heading">
+    <header className="masthead" style={{ backgroundImage: `url(${imgHome})` }}>
+    <div className="overlay"></div>
+    <div className="container">
+      <div className="row">
+        <div className="col-lg-8 col-md-10 mx-auto">
+          <div className="site-heading">
             <h1>gökAYten</h1>
-            <span class="subheading">
+            <span className="subheading">
               “Lovers don't finally meet somewhere. They're in each other all along...” Mevlana
             </span>
           </div>
@@ -22,4 +22,4 @@ const HeaderNav = () => {
   );
 };
 
-export default HeaderNav;
+export default Jumbotron;

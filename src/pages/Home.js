@@ -1,86 +1,77 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import HeaderNav from "../components/Navbar";
+import Jumbotron from "../components/Jumbotron";
+import { getPosts } from "../store/actions/post";
+import { Link } from "react-router-dom";
+import Alert from "../components/Alert";
 
+const Home = ({ getPosts, postsState: { posts, loading, error } }) => {
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
 
-const Home = () => {
+  if (loading) return <h1>Loading...</h1>;
+  if (posts.length <= 0) return <h1>No Posts Created...</h1>;
+
   return (
-    <Container>
-      <Row>
-        <Col className="col-lg-8 col-md-10 mx-auto">
-
-          <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Man must explore, and this is exploration at its greatest
-            </h2>
-            <h3 class="post-subtitle">
-              Problems look mighty small from 150 miles up
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="/home">Start Bootstrap</a>
-            on September 24, 2019</p>
-        </div>
-
-        <hr></hr>
-
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-            </h2>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="home">Start Bootstrap</a>
-            on September 18, 2019</p>
-        </div>
-
-        <hr></hr>
+    <>
+      <HeaderNav />
+      <Jumbotron />
+      <Container>
         
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Science has not yet mastered prophecy
-            </h2>
-            <h3 class="post-subtitle">
-              We predict too much for the next year and yet far too little for the next ten.
-            </h3>
+        <Row>
+          <Col className="col-lg-8 col-md-10 mx-auto">
+            {posts.map(post=> {
+              return (
+                <div className="post-preview">
+                <a href="post.html">
+                  <h2 className="post-title">
+                    {post.title}
+                  </h2>
+                  <h3 className="post-subtitle">
+                    {post.content}
+                  </h3>
+                </a>
+                <p className="post-meta">
+                  Posted by
+                  <a href="/home">Someone Someone</a>
+                  <span>on September 24, 2019</span>
+                  <span>{post.created_at}</span>
+                </p>
+              </div>
+              )
+            })}
+          </Col>
+        </Row>
+
+        <hr></hr>
+        <div className="clearfix">
+          <a className="btn btn-primary float-right" href="/home">
+            Older Posts &rarr;
           </a>
-          <p class="post-meta">Posted by
-            <a href="home">Start Bootstrap</a>
-            on August 24, 2019</p>
         </div>
-
         <hr></hr>
 
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Failure is not an option
-            </h2>
-            <h3 class="post-subtitle">
-              Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="home">Start Bootstrap</a>
-            on July 8, 2019</p>
-        </div>
-
-        <hr></hr>
-       
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="/home">Older Posts &rarr;</a>
-        </div>
-
-        <hr></hr>
-
-        </Col>
-      </Row>
-    </Container>
+      </Container>
+    </>
   );
 };
 
-export default Home;
+Home.propTypes = {
+  getPosts: PropTypes.func.isRequired,
+  postsState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  // console.log("State:", state);
+  return {
+    postsState: state.allPosts,
+  };
+};
+
+export default connect(mapStateToProps, { getPosts })(Home);
